@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUser } from '@/contexts/UserContext';
-import { SearchIcon, PlusCircle, MessageSquare, User, Menu, X } from 'lucide-react';
+import { SearchIcon, PlusCircle, MessageSquare, User, Menu, X, LogIn } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +25,13 @@ const Navbar: React.FC = () => {
     e.preventDefault();
     if (searchTerm.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchTerm)}`);
+    }
+  };
+
+  const handleLogin = () => {
+    navigate('/login');
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
     }
   };
 
@@ -93,10 +100,32 @@ const Navbar: React.FC = () => {
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button onClick={toggleMenu} className="p-2 md:hidden">
-          {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        {/* Mobile Navigation */}
+        <div className="flex items-center space-x-2 md:hidden">
+          {/* Login Button for Mobile */}
+          {!isAuthenticated && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={handleLogin} 
+              className="ml-2"
+              aria-label="Entrar ou Cadastrar"
+            >
+              <LogIn className="w-5 h-5" />
+            </Button>
+          )}
+          
+          {/* Menu Button for Mobile */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleMenu} 
+            className="ml-0"
+            aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
+          >
+            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </Button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
